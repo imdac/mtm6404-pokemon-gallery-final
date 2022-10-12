@@ -24,3 +24,40 @@ const pokedex = [
 // thumb: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
 // full: https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png
 
+function GalleryItemImage (props) {
+  const item = props.item
+  const thumbnail = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.id}.png`
+  return (
+    <img className="gallery-item-image" src={thumbnail} alt={item.name} />
+  )
+}
+
+function Gallery () {
+  const [items, setItems] = React.useState(pokedex)
+  
+  function clickHandler (target) {
+    setItems(items.map(item => item.id === target.id ? {...item, caught: !item.caught} : item))
+  }
+
+  return (
+    <div id="gallery" className="gallery">
+      {items.map(item => (
+        <div key={item.id} className={item.caught ? "gallery-item caught" : "gallery-item"} onClick={() => clickHandler(item)}>
+          <GalleryItemImage item={item} />
+          <h2 className="gallery-item-name">{item.name}</h2>
+        </div>))}
+    </div>
+  )
+}
+
+function App () {
+  return (
+    <React.Fragment>
+      <h1 className="gallery-title">Pokemon Gallery</h1>
+      <Gallery />
+    </React.Fragment>
+  )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(<App />)
